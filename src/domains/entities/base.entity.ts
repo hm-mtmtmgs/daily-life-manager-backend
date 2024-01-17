@@ -17,4 +17,8 @@ export abstract class Base {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
+
+  // デフォルトコンストラクタをprivateにして外部からNewできないようにする
+  // 外部からサブクラスをNewするにはstaticなnewメソッドを用意する
+  protected constructor() {}
 }

@@ -3,7 +3,12 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class BaseResponse {
   @ApiProperty({ type: String })
-  public message = 'OK';
+  message = 'OK';
   @ApiProperty({ type: Number })
-  public statusCode = HttpStatus.OK;
+  statusCode = HttpStatus.OK;
+}
+
+export class TokenResponse extends BaseResponse {
+  @ApiProperty({ type: String })
+  token: string;
 }

@@ -10,3 +10,10 @@ export class UserSignupRequest {
   @ApiProperty({ type: String })
   password: string;
 }
+
+export class UserLoginRequest {
+  @ApiProperty({ type: String })
+  email: string;
+  @ApiProperty({ type: String })
+  password: string;
+}
