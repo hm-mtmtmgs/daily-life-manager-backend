@@ -23,15 +23,15 @@ endif
 # マイグレーション
 ## ステータス確認
 migration-show:
-	npx typeorm-ts-node-commonjs migration:show -d ./src/db/data-source.ts
+	npx typeorm-ts-node-commonjs migration:show -d ./src/db/data_source.ts
 ## ファイル生成: make migration-gen MIKEFILE_ARG=file-name
 migration-gen:
 ifdef MIKEFILE_ARG
-	npx typeorm-ts-node-commonjs migration:generate ./src/db/migrations/${MIKEFILE_ARG} -d ./src/db/data-source.ts --pretty
+	npx typeorm-ts-node-commonjs migration:generate ./src/db/migrations/${MIKEFILE_ARG} -d ./src/db/data_source.ts --pretty
 endif
 ## 実行
 migration-run:
-	npx typeorm-ts-node-commonjs migration:run -d ./src/db/data-source.ts
+	npx typeorm-ts-node-commonjs migration:run -d ./src/db/data_source.ts
 ## ロールバック
 migration-revert:
-	npx typeorm-ts-node-commonjs migration:revert -d ./src/db/data-source.ts
+	npx typeorm-ts-node-commonjs migration:revert -d ./src/db/data_source.ts

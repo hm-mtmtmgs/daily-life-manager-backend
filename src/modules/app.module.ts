@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { dataSource } from '../db/data-source';
+import { dataSource } from '../db/data_source';
 import { LoggerMiddleware } from '../pipelines/middlewares';
 import { UserModule } from './user.module';
 
