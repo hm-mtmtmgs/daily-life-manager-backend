@@ -23,7 +23,7 @@ export class LoggerInterceptor implements NestInterceptor {
     return next.handle().pipe(
       catchError((err) => {
         // リクエストbodyのパスワードをマスクする
-        const reqBody = req.body;
+        const reqBody = { ...req.body };
         if (reqBody?.password) {
           reqBody.password = '*****';
         }

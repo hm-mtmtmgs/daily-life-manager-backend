@@ -22,7 +22,7 @@ export class LoggerMiddleware implements NestMiddleware {
     req['id'] = requestId;
 
     // リクエストbodyのパスワードをマスクする
-    const reqBody: any = req.body;
+    const reqBody: any = { ...req.body };
     if (reqBody?.password) {
       reqBody.password = '*****';
     }
