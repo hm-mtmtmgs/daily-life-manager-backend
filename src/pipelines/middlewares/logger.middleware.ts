@@ -19,9 +19,17 @@ export class LoggerMiddleware implements NestMiddleware {
     // リクエストIDを付与する
     const requestId = uuidv4();
     req.headers['x-request-id'] = requestId;
-    req['requestId'] = requestId;
+    req['id'] = requestId;
+
+    // リクエストbodyのパスワードをマスクする
+    const reqBody: any = req.body;
+    if (reqBody?.password) {
+      reqBody.password = '*****';
+    }
+    this.logger.log(
+      `${req.method} ${req.url} body: ${JSON.stringify(reqBody)} x-request-id: ${requestId}`,
+    );
 
     next();
-    this.logger.log(`${req.method} ${req.url} x-request-id: ${requestId}`);
   }
 }
