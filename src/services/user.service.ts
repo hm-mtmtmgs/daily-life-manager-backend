@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserSignupRequest } from '../controllers/requests';
 import { BaseResponse, MeResponse } from '../controllers/responses';
+import { UserDomainService } from '../domains/domain_services';
 import { UserEntity } from '../domains/entities';
 import { Email, FirstName, LastName, Password } from '../domains/values';
 
@@ -11,6 +12,7 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly userDomainService: UserDomainService,
   ) {}
 
   /**
@@ -23,6 +25,9 @@ export class UserService {
       new Email(params.email),
       new Password(params.password),
     );
+    if (await this.userDomainService.isUserEmailDuplication(user.email)) {
+      throw new BadRequestException('メールアドレスは既に使用されています');
+    }
 
     await this.userRepository.insert(user);
     return new BaseResponse();
