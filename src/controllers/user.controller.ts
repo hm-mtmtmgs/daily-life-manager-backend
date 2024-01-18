@@ -3,43 +3,52 @@ import {
   Controller,
   Get,
   Post,
-  Req,
+  Request,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { UserEntity } from '../domains/entities';
+import { JwtAuthGuard, LocalAuthGuard } from '../pipelines/guards';
 import { LoggerInterceptor } from '../pipelines/interceptors';
-import { UserService } from '../services';
+import { AuthService, UserService } from '../services';
 import { UserLoginRequest, UserSignupRequest } from './requests';
-import { BaseResponse, TokenResponse } from './responses';
+import { BaseResponse, MeResponse, TokenResponse } from './responses';
 
 @Controller()
-@ApiTags('user')
 @UseInterceptors(LoggerInterceptor)
+@ApiTags('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Post('signup')
   @ApiOperation({ summary: 'サインアップ' })
   async signup(
-    @Req() req: Request,
+    @Request() req: Express.Request,
     @Body() body: UserSignupRequest,
   ): Promise<BaseResponse> {
     return await this.userService.signup(body);
   }
 
   @Post('login')
+  @UseGuards(LocalAuthGuard)
   @ApiOperation({ summary: 'ログイン' })
   async login(
-    @Req() req: Request,
-    @Body() body: UserLoginRequest,
+    @Request() req: Express.Request,
+    @Body() _: UserLoginRequest,
   ): Promise<TokenResponse> {
-    return await this.userService.login(body);
+    _; // for eslint
+    return await this.authService.login(req.user as UserEntity);
   }
 
   @Get('me')
-  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '自分の情報を取得' })
-  async me(): Promise<BaseResponse> {
-    return await this.userService.me();
+  @ApiBearerAuth()
+  async me(@Request() req: Express.Request): Promise<MeResponse> {
+    return await this.userService.me(req.user as UserEntity);
   }
 }

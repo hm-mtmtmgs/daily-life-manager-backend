@@ -1,11 +1,11 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule, UserModule } from '.';
 import { dataSource } from '../db/data_source';
 import { LoggerMiddleware } from '../pipelines/middlewares';
-import { UserModule } from './user.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(dataSource.options), UserModule],
+  imports: [TypeOrmModule.forRoot(dataSource.options), AuthModule, UserModule],
   controllers: [],
   providers: [],
 })
