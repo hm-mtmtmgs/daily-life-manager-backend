@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TokenResponse } from '../controllers/responses';
 import { UserEntity } from '../domains/entities';
-import { comparePassword, isNothing } from '../utils';
+import { comparePassword, isNull } from '../utils';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +22,7 @@ export class AuthService {
       .createQueryBuilder(`main`)
       .where(`LOWER(main.email) = :email`, { email: email.toLowerCase() })
       .getOne();
-    if (isNothing(user)) {
+    if (isNull(user)) {
       throw new UnauthorizedException();
     }
     if (!comparePassword(password, user.password)) {
@@ -36,7 +36,7 @@ export class AuthService {
    */
   async validateJwt(payload: any): Promise<UserEntity> {
     const user = await this.userRepository.findOneBy({ id: payload.id });
-    if (isNothing(user)) {
+    if (isNull(user)) {
       throw new UnauthorizedException();
     }
     return user;

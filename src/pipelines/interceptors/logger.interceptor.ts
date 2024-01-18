@@ -7,7 +7,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable, catchError, tap } from 'rxjs';
-import { isNothing } from '../../utils';
+import { isNull } from '../../utils';
 
 Injectable();
 export class LoggerInterceptor implements NestInterceptor {
@@ -39,7 +39,7 @@ export class LoggerInterceptor implements NestInterceptor {
         // 例外エラーログ出力
         if (
           (err.status === HttpStatus.INTERNAL_SERVER_ERROR ||
-            isNothing(err.status)) &&
+            isNull(err.status)) &&
           err.name !== 'Error'
         ) {
           this.logger.fatal(
