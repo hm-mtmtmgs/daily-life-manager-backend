@@ -13,7 +13,8 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
-      // 例外のmessageが文字列のためclass-validatorのmessageを配列から文字列に変形する
+      // 例外のデフォルトmessageは単文字列
+      // しかし、class-validatorのデフォルトmessageは配列のため単文字列に変形してレスポンス型を統一
       exceptionFactory: (errors) =>
         new BadRequestException(
           errors
