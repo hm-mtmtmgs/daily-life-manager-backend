@@ -5,7 +5,12 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserEntity } from '../domains/entities';
 import { JwtAuthGuard } from '../pipelines/guards';
 import { LoggerInterceptor } from '../pipelines/interceptors';
@@ -21,8 +26,9 @@ export class UserController {
   @Get('me')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '自分の情報を取得' })
+  @ApiResponse({ type: MeResponse })
   @ApiBearerAuth()
-  async me(@Request() req: Express.Request): Promise<MeResponse> {
-    return await this.userService.me(req.user as UserEntity);
+  async getMe(@Request() req: Express.Request): Promise<MeResponse> {
+    return await this.userService.getMe(req.user as UserEntity);
   }
 }

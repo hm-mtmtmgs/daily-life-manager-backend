@@ -14,7 +14,7 @@ export class UserService {
   /**
    * 自分の情報を取得
    */
-  async me(user: UserEntity): Promise<MeResponse> {
+  async getMe(user: UserEntity): Promise<MeResponse> {
     const res = new MeResponse();
     res.lastName = user.lastName;
     res.firstName = user.firstName;

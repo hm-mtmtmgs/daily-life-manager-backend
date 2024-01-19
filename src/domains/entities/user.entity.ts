@@ -5,6 +5,9 @@ import { Base } from './base.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends Base {
+  /**
+   * カラム定義
+   */
   @Column({ name: 'last_name' })
   lastName: string;
 
@@ -17,6 +20,13 @@ export class UserEntity extends Base {
   @Column({ name: 'password' })
   password: string;
 
+  /**
+   * リレーション定義
+   */
+
+  /**
+   * インスタンス生成
+   */
   static new(
     lastName: UserLastName,
     firstName: UserFirstName,

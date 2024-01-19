@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthSignupRequest } from '../controllers/requests';
-import { BaseResponse, TokenResponse } from '../controllers/responses';
+import { TokenResponse } from '../controllers/responses';
 import { UserDomainService } from '../domains/domain_services';
 import { UserEntity } from '../domains/entities';
 import {
@@ -53,7 +53,7 @@ export class AuthService {
   /**
    * サインアップ
    */
-  async signup(params: AuthSignupRequest): Promise<BaseResponse> {
+  async signup(params: AuthSignupRequest): Promise<void> {
     const user = UserEntity.new(
       new UserLastName(params.lastName),
       new UserFirstName(params.firstName),
@@ -68,7 +68,6 @@ export class AuthService {
     }
 
     await this.userRepository.insert(user);
-    return new BaseResponse();
   }
 
   /**

@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseResponse } from './base.response';
 
-export class MeResponse extends BaseResponse {
+/**
+ * 自分の情報を取得
+ */
+export class MeResponse {
   @ApiProperty({ type: String })
   lastName: string;
   @ApiProperty({ type: String })

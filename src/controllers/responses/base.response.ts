@@ -1,14 +1,15 @@
-import { HttpStatus } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class BaseResponse {
+export class ErrorResponse {
   @ApiProperty({ type: String })
-  message = 'OK';
+  message: string;
+  @ApiProperty({ type: String })
+  error: string;
   @ApiProperty({ type: Number })
-  statusCode = HttpStatus.OK;
+  statusCode: number;
 }
 
-export class TokenResponse extends BaseResponse {
+export class TokenResponse {
   @ApiProperty({ type: String })
   token: string;
 }
