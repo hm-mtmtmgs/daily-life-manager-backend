@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { hashPassword } from '../../utils';
-import { Email, FirstName, LastName, Password } from '../values';
+import { Email, Password, UserFirstName, UserLastName } from '../values';
 import { Base } from './base.entity';
 
 @Entity({ name: 'users' })
@@ -18,8 +18,8 @@ export class UserEntity extends Base {
   password: string;
 
   static new(
-    lastName: LastName,
-    firstName: FirstName,
+    lastName: UserLastName,
+    firstName: UserFirstName,
     email: Email,
     password: Password,
   ): UserEntity {
@@ -32,8 +32,8 @@ export class UserEntity extends Base {
   }
 
   static reNew(
-    lastName: LastName,
-    firstName: FirstName,
+    lastName: UserLastName,
+    firstName: UserFirstName,
     email: Email,
     password: string,
   ): UserEntity {
