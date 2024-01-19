@@ -1,13 +1,21 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { TokenResponse } from '../controllers/responses';
+import { AuthSignupRequest } from '../controllers/requests';
+import { BaseResponse, TokenResponse } from '../controllers/responses';
+import { UserDomainService } from '../domains/domain_services';
 import { UserEntity } from '../domains/entities';
+import { Email, FirstName, LastName, Password } from '../domains/values';
 import { UserRepository } from '../repositories';
 import { comparePassword, isNull } from '../utils';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly userDomainService: UserDomainService,
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
   ) {}
@@ -35,6 +43,27 @@ export class AuthService {
       throw new UnauthorizedException();
     }
     return user;
+  }
+
+  /**
+   * サインアップ
+   */
+  async signup(params: AuthSignupRequest): Promise<BaseResponse> {
+    const user = UserEntity.new(
+      new LastName(params.lastName),
+      new FirstName(params.firstName),
+      new Email(params.email),
+      new Password(params.password),
+    );
+    const isDuplicate = await this.userDomainService.isEmailDuplication(
+      user.email,
+    );
+    if (isDuplicate) {
+      throw new BadRequestException('メールアドレスは既に使用されています');
+    }
+
+    await this.userRepository.insert(user);
+    return new BaseResponse();
   }
 
   /**

@@ -8,6 +8,7 @@ import { LoggerMiddleware } from '../pipelines/middlewares';
   imports: [TypeOrmModule.forRoot(dataSource.options), AuthModule, UserModule],
   controllers: [],
   providers: [],
+  exports: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
