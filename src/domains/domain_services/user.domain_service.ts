@@ -1,24 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { UserRepository } from '../../repositories';
 import { isNotNull } from '../../utils';
-import { UserEntity } from '../entities';
 
 @Injectable()
 export class UserDomainService {
-  constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   /**
    * ユーザーのメールアドレスが重複しているかどうか
    */
-  async isUserEmailDuplication(email: string): Promise<boolean> {
-    const user = await this.userRepository
-      .createQueryBuilder(`main`)
-      .where(`LOWER(main.email) = :email`, { email: email.toLowerCase() })
-      .getOne();
+  async isEmailDuplication(email: string): Promise<boolean> {
+    const user = await this.userRepository.findOneByEmail(email);
     return isNotNull(user);
   }
 }

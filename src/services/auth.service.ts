@@ -1,16 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { TokenResponse } from '../controllers/responses';
 import { UserEntity } from '../domains/entities';
+import { UserRepository } from '../repositories';
 import { comparePassword, isNull } from '../utils';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -18,10 +16,7 @@ export class AuthService {
    * ローカル認証
    */
   async validateLocal(email: string, password: string): Promise<UserEntity> {
-    const user = await this.userRepository
-      .createQueryBuilder(`main`)
-      .where(`LOWER(main.email) = :email`, { email: email.toLowerCase() })
-      .getOne();
+    const user = await this.userRepository.findOneByEmail(email);
     if (isNull(user)) {
       throw new UnauthorizedException();
     }
