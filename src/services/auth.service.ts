@@ -34,8 +34,8 @@ export class AuthService {
   /**
    * JWT認証
    */
-  async validateJwt(payload: any): Promise<UserEntity> {
-    const user = await this.userRepository.findOneBy({ id: payload.id });
+  async validateJwt(id: number): Promise<UserEntity> {
+    const user = await this.userRepository.findOneBy({ id: id });
     if (isNull(user)) {
       throw new UnauthorizedException();
     }
