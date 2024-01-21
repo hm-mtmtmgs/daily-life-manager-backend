@@ -1,31 +1,38 @@
-import { FirstName, LastName } from '.';
+import { UserFirstName, UserLastName } from '.';
+import { genRandomStr } from '../../utils';
 
 /**
  * 姓
  */
-describe('LastName', () => {
+describe('UserLastName', () => {
   test('_validate', () => {
     // 正常系
-    expect(new LastName('田中').value).toBe('田中');
-    expect(new LastName('Tanaka').value).toBe('Tanaka');
+    expect(new UserLastName('田中').value).toBe('田中');
+    expect(new UserLastName('Tanaka').value).toBe('Tanaka');
     // 異常系
-    expect(() => new LastName(null)).toThrow('値が不正です');
-    expect(() => new LastName(undefined)).toThrow('値が不正です');
-    expect(() => new LastName('')).toThrow('値が不正です');
+    expect(() => new UserLastName(null)).toThrow('値が不正です');
+    expect(() => new UserLastName(undefined)).toThrow('値が不正です');
+    expect(() => new UserLastName('')).toThrow('値が不正です');
+    expect(() => new UserLastName(genRandomStr(51))).toThrow(
+      '姓は50文字以内で入力してください',
+    );
   });
 });
 
 /**
  * 名
  */
-describe('FirstName', () => {
+describe('UserFirstName', () => {
   test('_validate', () => {
     // 正常系
-    expect(new FirstName('太郎').value).toBe('太郎');
-    expect(new FirstName('Tarou').value).toBe('Tarou');
+    expect(new UserFirstName('太郎').value).toBe('太郎');
+    expect(new UserFirstName('Tarou').value).toBe('Tarou');
     // 異常系
-    expect(() => new FirstName(null)).toThrow('値が不正です');
-    expect(() => new FirstName(undefined)).toThrow('値が不正です');
-    expect(() => new FirstName('')).toThrow('値が不正です');
+    expect(() => new UserFirstName(null)).toThrow('値が不正です');
+    expect(() => new UserFirstName(undefined)).toThrow('値が不正です');
+    expect(() => new UserFirstName('')).toThrow('値が不正です');
+    expect(() => new UserFirstName(genRandomStr(51))).toThrow(
+      '名は50文字以内で入力してください',
+    );
   });
 });
