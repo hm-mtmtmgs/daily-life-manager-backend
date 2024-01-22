@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   Request,
   UseGuards,
   UseInterceptors,
@@ -21,7 +22,11 @@ import { UserEntity } from '../domains/entities';
 import { JwtAuthGuard } from '../pipelines/guards';
 import { LoggerInterceptor } from '../pipelines/interceptors';
 import { TaskService } from '../services';
-import { CreateTaskRequest, UpdateTaskRequest } from './requests';
+import {
+  CreateTaskRequest,
+  PaginationRequest,
+  UpdateTaskRequest,
+} from './requests';
 import {
   TaskDetailResponse,
   TaskListResponse,
@@ -50,8 +55,9 @@ export class TaskController {
   @ApiBearerAuth()
   async getTaskList(
     @Request() req: Express.Request,
+    @Query() query: PaginationRequest,
   ): Promise<TaskListResponse> {
-    return this.taskService.getTaskList(req.user as UserEntity);
+    return this.taskService.getTaskList(req.user as UserEntity, query);
   }
 
   @Get('tasks/:id')

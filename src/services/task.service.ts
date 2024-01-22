@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTaskRequest, UpdateTaskRequest } from '../controllers/requests';
+import {
+  CreateTaskRequest,
+  PaginationRequest,
+  UpdateTaskRequest,
+} from '../controllers/requests';
 import {
   TaskDetailResponse,
   TaskListResponse,
@@ -31,9 +35,13 @@ export class TaskService {
   /**
    * タスクリストを取得
    */
-  async getTaskList(user: UserEntity): Promise<TaskListResponse> {
-    const taskList = await this.taskRepository.findBy({ userId: user.id });
-    return new TaskListResponse(taskList);
+  async getTaskList(
+    user: UserEntity,
+    params: PaginationRequest,
+  ): Promise<TaskListResponse> {
+    const [taskList, count] =
+      await this.taskRepository.findWithPagination(params);
+    return new TaskListResponse(taskList, params, count);
   }
 
   /**

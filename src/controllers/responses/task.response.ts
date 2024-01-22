@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { PaginationResponse } from '.';
 import { TaskEntity } from '../../domains/entities';
+import { PaginationRequest } from '../requests';
 
 export class TaskItem {
   @ApiProperty({ type: String })
@@ -40,11 +42,16 @@ export class TaskMeResponse {
 /**
  * タスクリストを取得
  */
-export class TaskListResponse {
+export class TaskListResponse extends PaginationResponse {
   @ApiProperty({ type: [TaskItem] })
   items: TaskItem[];
 
-  constructor(taskList: TaskEntity[]) {
+  constructor(
+    taskList: TaskEntity[],
+    pagination: PaginationRequest,
+    count: number,
+  ) {
+    super(pagination, count);
     this.items = taskList.map((task) => new TaskItem(task));
   }
 }
