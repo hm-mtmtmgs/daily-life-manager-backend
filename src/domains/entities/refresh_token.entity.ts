@@ -10,9 +10,6 @@ export class RefreshTokenEntity extends Base {
   @Column({ name: 'token_no' })
   tokenNo: string;
 
-  @Column({ name: 'user_id', unsigned: true })
-  userId: number;
-
   @Column({ name: 'issued_at' })
   issuedAt: Date;
 
@@ -25,42 +22,42 @@ export class RefreshTokenEntity extends Base {
   /**
    * リレーション定義
    */
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, (user) => user.refreshTokens)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
-  userRow?: UserEntity;
+  userRow: UserEntity;
 
   /**
    * インスタンス生成
    */
   static new(
     tokenNo: string,
-    userId: number,
     issuedAt: Date,
     expiredAt: Date,
     expiredIn: number,
+    user: UserEntity,
   ): RefreshTokenEntity {
     const entity = new RefreshTokenEntity();
     entity.tokenNo = tokenNo;
-    entity.userId = userId;
     entity.issuedAt = issuedAt;
     entity.expiredAt = expiredAt;
     entity.expiredIn = expiredIn;
+    entity.userRow = user;
     return entity;
   }
 
   static reNew(
     tokenNo: string,
-    userId: number,
     issuedAt: Date,
     expiredAt: Date,
     expiredIn: number,
+    user: UserEntity,
   ): RefreshTokenEntity {
     const entity = new RefreshTokenEntity();
     entity.tokenNo = tokenNo;
-    entity.userId = userId;
     entity.issuedAt = issuedAt;
     entity.expiredAt = expiredAt;
     entity.expiredIn = expiredIn;
+    entity.userRow = user;
     return entity;
   }
 }

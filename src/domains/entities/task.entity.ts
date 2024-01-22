@@ -48,13 +48,10 @@ export class TaskEntity extends Base {
   @Column({ name: 'complete_at', nullable: true })
   completedAt: Date;
 
-  @Column({ name: 'user_id', unsigned: true })
-  userId: number;
-
   /**
    * リレーション定義
    */
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, (user) => user.tasks)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   userRow?: UserEntity;
 
@@ -68,7 +65,7 @@ export class TaskEntity extends Base {
     status: TaskStatus,
     dueAt: TaskDueAt,
     completedAt: TaskCompletedAt,
-    userId: number,
+    user: UserEntity,
   ): TaskEntity {
     const task = new TaskEntity();
     task.title = title.value;
@@ -77,7 +74,7 @@ export class TaskEntity extends Base {
     task.status = status.value || TaskStatusEnum.NOT_STARTED;
     task.dueAt = dueAt?.value || null;
     task.completedAt = completedAt?.value || null;
-    task.userId = userId;
+    task.userRow = user;
     return task;
   }
 
@@ -88,7 +85,7 @@ export class TaskEntity extends Base {
     status: TaskStatus,
     dueAt: TaskDueAt,
     completedAt: TaskCompletedAt,
-    userId: number,
+    user: UserEntity,
   ): TaskEntity {
     const task = new TaskEntity();
     task.title = title.value;
@@ -97,7 +94,7 @@ export class TaskEntity extends Base {
     task.status = status.value;
     task.dueAt = dueAt?.value || null;
     task.completedAt = completedAt?.value || null;
-    task.userId = userId;
+    task.userRow = user;
     return task;
   }
 }

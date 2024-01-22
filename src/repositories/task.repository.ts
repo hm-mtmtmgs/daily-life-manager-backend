@@ -13,6 +13,7 @@ export class TaskRepository extends Repository<TaskEntity> {
     params: PaginationRequest,
   ): Promise<[TaskEntity[], number]> {
     const [taskList, count] = await this.createQueryBuilder(`main`)
+      .leftJoinAndSelect(`main.userRow`, `user`)
       .limit(params.pageSize)
       .offset(params.page ? (params.page - 1) * params.pageSize : 0)
       .getManyAndCount();

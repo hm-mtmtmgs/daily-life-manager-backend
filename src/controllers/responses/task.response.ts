@@ -23,7 +23,7 @@ export class TaskItem {
     this.priority = task?.priority || null;
     this.dueAt = task?.dueAt || null;
     this.completedAt = task?.completedAt || null;
-    this.userId = task?.userId || null;
+    this.userId = task?.userRow?.id || null;
   }
 }
 

@@ -28,7 +28,10 @@ export class TaskService {
    * 私のタスクリストを取得
    */
   async getTaskMe(user: UserEntity): Promise<TaskMeResponse> {
-    const taskList = await this.taskRepository.findBy({ userId: user.id });
+    const taskList = await this.taskRepository.find({
+      where: { userRow: { id: user.id } },
+      relations: { userRow: true },
+    });
     return new TaskMeResponse(taskList);
   }
 
@@ -64,7 +67,7 @@ export class TaskService {
       new TaskStatus(params.status),
       new TaskDueAt(new Date(params.dueAt)),
       new TaskCompletedAt(null),
-      user.id,
+      user,
     );
     await this.taskRepository.save(task);
   }

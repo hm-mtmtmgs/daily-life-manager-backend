@@ -66,10 +66,10 @@ export class AuthService {
     const now = new Date();
     const refreshToken = await this.refreshTokenRepository.findOne({
       where: {
-        userId: id,
         tokenNo: uuid,
         issuedAt: LessThanOrEqual(now),
         expiredAt: MoreThanOrEqual(now),
+        userRow: { id: id },
       },
       relations: { userRow: true },
     });
@@ -118,10 +118,10 @@ export class AuthService {
     );
     const refreshToken = RefreshTokenEntity.new(
       uuid,
-      user.id,
       issuedAt,
       expiredAt,
       appConst.jwtRefreshTokenExpireTime,
+      user,
     );
     await this.refreshTokenRepository.insert(refreshToken);
 

@@ -1,4 +1,5 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { RefreshTokenEntity, TaskEntity } from '.';
 import { hashPassword } from '../../utils';
 import { Email, Password, UserFirstName, UserLastName } from '../values';
 import { Base } from './base.entity';
@@ -23,6 +24,11 @@ export class UserEntity extends Base {
   /**
    * リレーション定義
    */
+  @OneToMany(() => RefreshTokenEntity, (refreshToken) => refreshToken.userRow)
+  refreshTokens?: RefreshTokenEntity[];
+
+  @OneToMany(() => TaskEntity, (task) => task.userRow)
+  tasks?: TaskEntity[];
 
   /**
    * インスタンス生成

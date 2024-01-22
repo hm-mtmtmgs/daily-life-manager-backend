@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1705915483284 implements MigrationInterface {
-    name = 'Init1705915483284'
+export class Init1705933956697 implements MigrationInterface {
+    name = 'Init1705933956697'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
@@ -11,10 +11,10 @@ export class Init1705915483284 implements MigrationInterface {
                 \`updated_at\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
                 \`deleted_at\` datetime(6) NULL,
                 \`token_no\` varchar(255) NOT NULL,
-                \`user_id\` int UNSIGNED NOT NULL,
                 \`issued_at\` datetime NOT NULL,
                 \`expired_at\` datetime NOT NULL,
                 \`expired_In\` int NOT NULL,
+                \`user_id\` int UNSIGNED NULL,
                 PRIMARY KEY (\`id\`)
             ) ENGINE = InnoDB
         `);
@@ -43,7 +43,7 @@ export class Init1705915483284 implements MigrationInterface {
                 \`status\` varchar(255) NOT NULL,
                 \`due_at\` datetime NOT NULL,
                 \`complete_at\` datetime NULL,
-                \`user_id\` int UNSIGNED NOT NULL,
+                \`user_id\` int UNSIGNED NULL,
                 PRIMARY KEY (\`id\`)
             ) ENGINE = InnoDB
         `);
