@@ -8,11 +8,11 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from '../domains/entities';
-import { LocalAuthGuard } from '../pipelines/guards';
+import { JwtRefreshAuthGuard, LocalAuthGuard } from '../pipelines/guards';
 import { LoggerInterceptor } from '../pipelines/interceptors';
 import { AuthService } from '../services';
 import { AuthLoginRequest, AuthSignupRequest } from './requests';
-import { TokenResponse } from './responses';
+import { AccessTokenResponse } from './responses';
 
 @Controller()
 @UseInterceptors(LoggerInterceptor)
@@ -33,12 +33,22 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalAuthGuard)
   @ApiOperation({ summary: 'ログイン' })
-  @ApiResponse({ type: TokenResponse })
+  @ApiResponse({ type: AccessTokenResponse })
   async login(
     @Request() req: Express.Request,
     @Body() _: AuthLoginRequest,
-  ): Promise<TokenResponse> {
+  ): Promise<AccessTokenResponse> {
     _; // for eslint
+    return await this.authService.login(req.user as UserEntity);
+  }
+
+  @Post('token/refresh')
+  @UseGuards(JwtRefreshAuthGuard)
+  @ApiOperation({ summary: 'トークンリフレッシュ' })
+  @ApiResponse({ type: AccessTokenResponse })
+  async refreshToken(
+    @Request() req: Express.Request,
+  ): Promise<AccessTokenResponse> {
     return await this.authService.login(req.user as UserEntity);
   }
 }

@@ -48,7 +48,7 @@ export class TaskEntity extends Base {
   @Column({ name: 'complete_at', nullable: true })
   completedAt: Date;
 
-  @Column({ name: 'user_id' })
+  @Column({ name: 'user_id', unsigned: true })
   userId: number;
 
   /**

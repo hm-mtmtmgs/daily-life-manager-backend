@@ -13,6 +13,19 @@ export class ErrorResponse {
 export class TokenResponse {
   @ApiProperty({ type: String })
   token: string;
+  @ApiProperty({ type: Number, description: 'seconds' })
+  expiresIn: number;
+}
+
+export class AccessTokenResponse {
+  @ApiProperty({ type: String })
+  accessToken: string;
+  @ApiProperty({ type: Number, description: 'seconds' })
+  accessTokenExpiresIn: number;
+  @ApiProperty({ type: String })
+  refreshToken: string;
+  @ApiProperty({ type: String })
+  tokenType = 'Bearer';
 }
 
 export class PaginationResponse {

@@ -12,7 +12,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UserEntity } from '../domains/entities';
-import { JwtAuthGuard } from '../pipelines/guards';
+import { JwtAccessAuthGuard } from '../pipelines/guards';
 import { LoggerInterceptor } from '../pipelines/interceptors';
 import { UserService } from '../services';
 import { MeResponse } from './responses';
@@ -24,7 +24,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('me')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAccessAuthGuard)
   @ApiOperation({ summary: '自分の情報を取得' })
   @ApiResponse({ type: MeResponse })
   @ApiBearerAuth()

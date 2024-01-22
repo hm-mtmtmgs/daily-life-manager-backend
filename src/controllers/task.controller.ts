@@ -19,7 +19,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UserEntity } from '../domains/entities';
-import { JwtAuthGuard } from '../pipelines/guards';
+import { JwtAccessAuthGuard } from '../pipelines/guards';
 import { LoggerInterceptor } from '../pipelines/interceptors';
 import { TaskService } from '../services';
 import {
@@ -40,7 +40,7 @@ export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Get('tasks/me')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAccessAuthGuard)
   @ApiOperation({ summary: '私のタスクリストを取得' })
   @ApiResponse({ type: TaskMeResponse })
   @ApiBearerAuth()
@@ -49,7 +49,7 @@ export class TaskController {
   }
 
   @Get('tasks')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAccessAuthGuard)
   @ApiOperation({ summary: 'タスクリストを取得' })
   @ApiResponse({ type: TaskListResponse })
   @ApiBearerAuth()
@@ -61,7 +61,7 @@ export class TaskController {
   }
 
   @Get('tasks/:id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAccessAuthGuard)
   @ApiOperation({ summary: 'タスク詳細を取得' })
   @ApiResponse({ type: TaskDetailResponse })
   @ApiBearerAuth()
@@ -73,7 +73,7 @@ export class TaskController {
   }
 
   @Post('tasks')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAccessAuthGuard)
   @ApiOperation({ summary: 'タスクを作成' })
   @ApiResponse({})
   @ApiBearerAuth()
@@ -85,7 +85,7 @@ export class TaskController {
   }
 
   @Put('tasks/:id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAccessAuthGuard)
   @ApiOperation({ summary: 'タスクを更新' })
   @ApiResponse({})
   @ApiBearerAuth()
@@ -98,7 +98,7 @@ export class TaskController {
   }
 
   @Delete('tasks/:id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAccessAuthGuard)
   @ApiOperation({ summary: 'タスクを削除' })
   @ApiResponse({})
   @ApiBearerAuth()

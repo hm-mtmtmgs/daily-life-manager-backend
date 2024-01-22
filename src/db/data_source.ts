@@ -15,5 +15,5 @@ export const dataSource = new DataSource({
   entities: entities,
   migrations: [__dirname + '/migrations/*.{js,ts}'],
   synchronize: false,
-  logging: process.env.MYSQL_DATABASE === 'production' ? false : true,
+  logging: process.env.NODE_ENV === 'production' ? false : true,
 });
